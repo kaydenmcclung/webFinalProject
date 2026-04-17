@@ -6,6 +6,7 @@ import History from './routes/History'
 import Reports from './routes/Reports'
 import Insights from './routes/Insights'
 import Navbar from "./components/Navbar"
+import Sidebar from './components/Sidebar'
 import {Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     <>
       <div>
         <Navbar />
+        <Sidebar />
         <Routes>
           <Route path ='/' element={<Dashboard />}/>
           <Route path ='/addtransaction' element={<AddTransaction />}/>
