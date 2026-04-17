@@ -15,14 +15,18 @@ function App() {
     <>
       <div>
         <Navbar />
-        <Sidebar />
-        <Routes>
-          <Route path ='/' element={<Dashboard />}/>
-          <Route path ='/addtransaction' element={<AddTransaction />}/>
-          <Route path ='/history' element={<History />}/>
-          <Route path ='/reports' element={<Reports />}/>
-          <Route path ='/insights' element={<Insights />}/>
-        </Routes>
+        <div style={{display:'flex', minHeight:'100vh'}}>
+          <Sidebar />
+          <main style={{flex:'1', padding:'20px'}}>
+            <Routes>
+              <Route path ='/' element={<Dashboard />}/>
+              <Route path ='/addtransaction' element={<AddTransaction />}/>
+              <Route path ='/history' element={<History />}/>
+              <Route path ='/reports' element={<Reports />}/>
+              <Route path ='/insights' element={<Insights />}/>
+            </Routes>
+          </main>
+        </div>
       </div>
     </>
   )

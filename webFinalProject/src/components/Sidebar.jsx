@@ -4,13 +4,15 @@ import { Link } from "react-router-dom"
 
 const Sidebar = () => {
   return (
-    <nav style={{ width: '200px', height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <h2>Navigation</h2>
-      <Link to="/">Dashboard</Link>
-      <Link to="/addtransaction">Add Transaction</Link>
-      <Link to="/history">Transaction History</Link>
-      <Link to="/reports">Reports</Link>
-      <Link to="/insights">Insights</Link>
+    <nav className="sidebar">
+      <h2 style={{marginBottom:'20px'}}>Navigation</h2>
+      <ul className="sidebar-links">
+        <li><Link to="/" className="sidebar-box">Dashboard</Link></li>
+        <li><Link to="/addtransaction" className="sidebar-box">Add Transaction</Link></li>
+        <li><Link to="/history" className="sidebar-box">Transaction History</Link></li>
+        <li><Link to="/reports" className="sidebar-box">Reports</Link></li>
+        <li><Link to="/insights" className="sidebar-box">Insights</Link></li>
+      </ul>
     </nav>
   )
 };
