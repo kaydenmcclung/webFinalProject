@@ -6,9 +6,8 @@ const Navbar = () => {
     return (
         <nav className = 'navbar'>
             <div style={{display: 'flex', justifyContent: 'left'}}>
-                <Link to='/'>
-                    Home
-                </Link>
+                <Link to='/' style={{ textDecoration: 'none' }}><h2>Application Name</h2></Link>
+                <h2 style={{flex:'1'}}>current page</h2>
             </div>
         </nav>
     )
