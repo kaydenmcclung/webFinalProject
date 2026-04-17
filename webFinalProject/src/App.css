@@ -7,6 +7,7 @@
   border: 2px solid transparent;
   transition: border-color 0.3s;
   margin-bottom: 24px;
+  
 
   &:hover {
     border-color: var(--accent-border);
@@ -15,6 +16,15 @@
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
+}
+
+.navbar{
+  background-color: #1e293b;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 8rem;
+  padding-right: 8rem;
 }
 
 .hero {

@@ -1,6 +1,11 @@
 //import { useState } from 'react'
 import './App.css'
-
+import Dashboard from './routes/Dashboard'
+import AddTransaction from './routes/AddTransaction'
+import History from './routes/History'
+import Reports from './routes/Reports'
+import Insights from './routes/Insights'
+import Navbar from "./components/Navbar"
 import {Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -8,6 +13,7 @@ function App() {
   return (
     <>
       <div>
+        <Navbar />
         <Routes>
           <Route path ='/' element={<Dashboard />}/>
           <Route path ='/addtransaction' element={<AddTransaction />}/>
