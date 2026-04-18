@@ -58,6 +58,21 @@
   color: #007bff;
 }
 
+.transactionCard {
+  width: 300px;
+  border: 2px solid #333;
+  padding: 20px;
+  background-color: #252525;
+  border-radius: 12px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 15px;
+  text-align: left;
+  justify-content: center;
+}
+
 .hero {
   position: relative;
 

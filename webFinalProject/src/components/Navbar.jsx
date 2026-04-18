@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { useLocation } from 'react-router-dom';
 
 const Navbar = () => {
+    //to set title in navbar to the current page name
     const location = useLocation();
     const titles = {
         '/': 'Dashboard',
@@ -12,8 +13,7 @@ const Navbar = () => {
         '/reports' : 'Reports',
         '/insights' : 'Insights'
     };
-
-     const currentTitle = titles[location.pathname] || 'Page Title';
+    const currentTitle = titles[location.pathname] || 'Page Title';
 
     return (
         <nav className = 'navbar'>
