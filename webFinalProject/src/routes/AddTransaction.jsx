@@ -95,7 +95,7 @@ const AddTransaction = () => {
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            style={inputStyle}
+            style={inputStyle} 
           >
             <option value="income">Income</option>
             <option value="expense">Expense</option>
@@ -161,6 +161,7 @@ const inputStyle = {
   borderRadius: "5px",
   border: "none",
   fontSize: "16px",
+  backgroundColor: "#45455f"
 };
 
 export default AddTransaction;

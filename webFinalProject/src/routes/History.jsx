@@ -40,7 +40,6 @@ const History = () => {
           <div
             key={t.id}
             style={{
-              border: "1px solid #aaa",
               borderRadius: "10px",
               padding: "15px",
               marginBottom: "15px",

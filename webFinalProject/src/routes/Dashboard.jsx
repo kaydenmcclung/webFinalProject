@@ -38,7 +38,6 @@ const Dashboard = () => {
 
       <div style={{ flex: "1" }}>
         <Welcome />
-        <h2 style={{ paddingTop: "30px" }}>Top Reports</h2>
       </div>
     </div>
   );
