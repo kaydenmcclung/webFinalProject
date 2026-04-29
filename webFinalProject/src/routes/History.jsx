@@ -37,7 +37,7 @@ const History = () => {
 
       if (response.ok) {
         // Update local state by filtering out the deleted item
-        setTransactions((prev) => prev.filter((t) => t.id !== id));
+        setTransactions((prev) => prev.filter((t) => t._id !== id));
       } else {
         alert("Failed to delete from server.");
       }
@@ -65,7 +65,7 @@ const History = () => {
       ) : (
         sortedTransactions.map((t) => (
           <div
-            key={t.id}
+            key={t._id}
             style={{
               borderRadius: "10px",
               padding: "15px",
@@ -103,7 +103,7 @@ const History = () => {
                 {t.type === "income" ? "+" : "-"}${t.amount}
               </p>
               <button
-                onClick={() => handleDelete(t.id)}
+                onClick={() => handleDelete(t._id)}
                 style={{
                   backgroundColor: "#ff4d4d",
                   color: "white",

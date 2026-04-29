@@ -44,7 +44,7 @@ const Dashboard = () => {
         ) : (
           transactions.map((t) => (
             <TransactionCard
-              key={t.id}
+              key={t._id}
               transactionName={t.description || "Transaction"}
               amount={t.amount}
               category={t.category}

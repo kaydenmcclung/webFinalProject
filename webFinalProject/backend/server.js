@@ -1,15 +1,23 @@
 const Hapi = require('@hapi/hapi');
 const Joi = require('joi');
+const mongoose = require('mongoose');
+const Transaction = require('./models/Transaction');
 
 const init = async () => {
+    const localUri = 'mongodb://127.0.0.1:27017/expense_tracker';
+
+    await mongoose.connect(localUri)
+        .then(() => console.log('✅ Connected to Local MongoDB'))
+        .catch(err => {
+            console.error('❌ Local connection error:', err);
+            process.exit(1);
+        });
+
     const server = Hapi.server({
         port: 5000,
         host: 'localhost',
         routes: { cors: true }
     });
-
-    // In-memory data store
-    let transactions = [];
 
     console.log('Building CRUD routes...');
 
@@ -17,8 +25,8 @@ const init = async () => {
     server.route({
         method: 'GET',
         path: '/transactions',
-        handler: (request, h) => {
-            return transactions;
+        handler: async (request, h) => {
+            return await Transaction.find().sort({ date: -1 });
         }
     });
 
@@ -38,44 +46,14 @@ const init = async () => {
                 failAction: (request, h, err) => { throw err; }
             }
         },
-        handler: (request, h) => {
-            const transaction = { id: Date.now().toString(), ...request.payload };
-            transactions.push(transaction);
-            return h.response(transaction).code(201);
+        handler: async (request, h) => {
+            const newTransaction = new Transaction(request.payload);
+            const saved = await newTransaction.save();
+            return h.response(saved).code(201);
         }
     });
 
-    // 3. UPDATE (PUT)
-    server.route({
-        method: 'PUT',
-        path: '/transactions/{id}',
-        options: {
-            validate: {
-                params: Joi.object({
-                    id: Joi.string().required()
-                }),
-                payload: Joi.object({
-                    amount: Joi.number().positive(),
-                    type: Joi.string().valid('income', 'expense'),
-                    category: Joi.string(),
-                    date: Joi.date().iso(),
-                    description: Joi.string().allow('').max(255)
-                }),
-                failAction: (request, h, err) => { throw err; }
-            }
-        },
-        handler: (request, h) => {
-            const index = transactions.findIndex(t => t.id === request.params.id);
-            if (index === -1) {
-                return h.response({ message: 'Transaction not found' }).code(404);
-            }
-            // Merge existing transaction with updates
-            transactions[index] = { ...transactions[index], ...request.payload };
-            return transactions[index];
-        }
-    });
-
-    // 4. DELETE (DELETE)
+    // DELETE (DELETE)
     server.route({
         method: 'DELETE',
         path: '/transactions/{id}',
@@ -87,24 +65,20 @@ const init = async () => {
                 failAction: (request, h, err) => { throw err; }
             }
         },
-        handler: (request, h) => {
-            const initialLength = transactions.length;
-            transactions = transactions.filter(t => t.id !== request.params.id);
-            
-            if (transactions.length === initialLength) {
-                return h.response({ message: 'Transaction not found' }).code(404);
-            }
-            return h.response().code(204); // Success, no content
+         handler: async (request, h) => {
+                const result = await Transaction.findByIdAndDelete(request.params.id);
+                return result ? h.response().code(204) : h.response({ message: 'Not Found' }).code(404);
         }
     });
 
-    try {
-        await server.start();
-        console.log('✅ Full CRUD API live at:', server.info.uri);
-    } catch (err) {
-        console.error('❌ Failed to start:', err);
-        process.exit(1);
-    }
+    await server.start();
+    console.log('Server running on %s', server.info.uri);
 };
+
+process.on('unhandledRejection', (err) => {
+    console.log(err);
+    process.exit(1);
+});
+
 
 init();

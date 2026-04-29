@@ -4,7 +4,7 @@ const Reports = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 1. Fetch data from Hapi API
+  //fetch data
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
