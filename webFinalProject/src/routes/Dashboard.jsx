@@ -5,32 +5,50 @@ import Welcome from "../components/Welcome";
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedTransactions =
-      JSON.parse(localStorage.getItem("transactions")) || [];
+    const fetchRecentTransactions = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/transactions");
+        if (!response.ok) throw new Error("Failed to fetch");
+        
+        const allTransactions = await response.json();
 
-    // newest first
-    const recentTransactions = storedTransactions.slice().reverse().slice(0, 5);
+        // 1. Sort by ID or Date descending (newest first)
+        // 2. Take only the first 5
+        const recent = [...allTransactions]
+          .sort((a, b) => b.id - a.id)
+          .slice(0, 5);
 
-    setTransactions(recentTransactions);
+        setTransactions(recent);
+      } catch (error) {
+        console.error("Dashboard fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecentTransactions();
   }, []);
 
   return (
-    <div style={{ display: "flex" }}>
-      <div>
-        <h2>Recent Transactions</h2>
+    <div style={{ display: "flex", padding: "20px", gap: "20px" }}>
+      <div style={{ flex: "1" }}>
+        <h2 style={{ color: "white", marginBottom: "20px" }}>Recent Transactions</h2>
 
-        {transactions.length === 0 ? (
-          <p>No recent transactions yet.</p>
+        {loading ? (
+          <p style={{ color: "white" }}>Loading...</p>
+        ) : transactions.length === 0 ? (
+          <p style={{ color: "white" }}>No recent transactions yet.</p>
         ) : (
-          transactions.map((transaction) => (
+          transactions.map((t) => (
             <TransactionCard
-              key={transaction.id}
-              transactionName={transaction.description || "No description"}
-              amount={transaction.amount}
-              category={transaction.type}
-              date={new Date(transaction.id).toLocaleDateString()}
+              key={t.id}
+              transactionName={t.description || "Transaction"}
+              amount={t.amount}
+              category={t.category}
+              date={t.date ? t.date.split('T')[0] : "No Date"}
             />
           ))
         )}
