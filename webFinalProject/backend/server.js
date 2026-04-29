@@ -21,7 +21,7 @@ const init = async () => {
 
     console.log('Building CRUD routes...');
 
-    // 1. READ ALL (GET)
+    //GET
     server.route({
         method: 'GET',
         path: '/transactions',
@@ -30,7 +30,7 @@ const init = async () => {
         }
     });
 
-    // 2. CREATE (POST)
+    //POST
     server.route({
         method: 'POST',
         path: '/transactions',
@@ -53,7 +53,7 @@ const init = async () => {
         }
     });
 
-    // DELETE (DELETE)
+    // DELETE
     server.route({
         method: 'DELETE',
         path: '/transactions/{id}',

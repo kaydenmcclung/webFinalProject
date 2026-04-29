@@ -15,8 +15,8 @@ const Dashboard = () => {
         
         const allTransactions = await response.json();
 
-        // 1. Sort by ID or Date descending (newest first)
-        // 2. Take only the first 5
+        // Sort by ID or Date descending (newest first)
+        // Take only the first 5
         const recent = [...allTransactions]
           .sort((a, b) => b.id - a.id)
           .slice(0, 5);

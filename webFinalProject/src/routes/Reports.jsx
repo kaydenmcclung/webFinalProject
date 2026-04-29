@@ -22,7 +22,7 @@ const Reports = () => {
     fetchTransactions();
   }, []);
 
-  // 2. Data Filtering and Calculations
+  // filter data
   const incomeTransactions = transactions.filter(
     (transaction) => transaction.type === "income"
   );
@@ -52,7 +52,7 @@ const Reports = () => {
     return totals;
   }, {});
 
-  // 3. UI logic
+  // ui
   if (loading) {
     return (
       <div style={{ padding: "50px", textAlign: "center", color: "white" }}>
@@ -157,7 +157,7 @@ const Reports = () => {
   );
 };
 
-// Reusable card style
+//style
 const cardStyle = {
   flex: "1",
   minWidth: "200px",

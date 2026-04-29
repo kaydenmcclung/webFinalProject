@@ -3,16 +3,16 @@ const supertest = require('supertest');
 const request = supertest('http://localhost:5000'); 
 
 describe('Transactions API', () => {
-    // Test for GET /transactions
+    // Test for GET 
     it('should return all transactions', async () => {
         const res = await request.get('/transactions');
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('array');
     });
 
-    // Test for DELETE /transactions/{id}
+    // Test for DELETE 
     it('should delete an existing transaction', async () => {
-        // Create a transaction to delete
+        // Create transaction to delete
         const newTx = await request.post('/transactions').send({
             amount: 20,
             type: 'expense',
@@ -29,21 +29,21 @@ describe('Transactions API', () => {
         // Assertions
         expect(deleteRes.status).to.equal(204); 
 
-        // Double check it's actually gone
+        // make sure it's actually gone
         const verifyRes = await request.get('/transactions');
         const ids = verifyRes.body.map(t => t._id);
         expect(ids).to.not.include(transactionId);
     });
 
-    // Test for DELETE with non-existent ID
+    // Test DELETE with non-existent ID
     it('should return 404 when deleting an ID that doesn’t exist', async () => {
-        const fakeId = '65f1234567890abcdef12345'; // Valid MongoDB ID format but doesn't exist
+        const fakeId = '65f1234567890abcdef12345'; 
         const res = await request.delete(`/transactions/${fakeId}`);
         expect(res.status).to.equal(404);
     });
 
 
-    // Test for POST /transactions
+    // Test POST 
     it('should create a new transaction', async () => {
         const payload = {
             amount: 50,

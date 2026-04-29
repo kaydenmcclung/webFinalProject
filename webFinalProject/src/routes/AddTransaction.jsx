@@ -7,14 +7,13 @@ const AddTransaction = () => {
 
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("income");
-  const [category, setCategory] = useState(""); // ← updated
+  const [category, setCategory] = useState(""); 
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Validation logic remains the same
     if (!amount || !date || !category) {
       alert("Please fill in all required fields");
       return;
@@ -29,7 +28,7 @@ const AddTransaction = () => {
     };
 
     try {
-      // 2. Send to Hapi API
+      //Send API
       const response = await fetch("http://localhost:5000/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,7 +104,7 @@ const AddTransaction = () => {
             <option value="expense">Expense</option>
           </select>
 
-          {/* Category (UPDATED) */}
+          {/* Category */}
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}

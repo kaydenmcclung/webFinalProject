@@ -20,7 +20,7 @@ const Insights = () => {
   const [filterRange, setFilterRange] = useState("all");
   const [loading, setLoading] = useState(true);
 
-  // 1. Fetch data from Hapi API
+  // Fetch data 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -89,7 +89,6 @@ const Insights = () => {
   }));
 
   const dailyTotals = expenseTransactions.reduce((totals, transaction) => {
-    // FIX: Clean up ISO date string for display (1998-02-06T00... -> 1998-02-06)
     const date = transaction.date ? transaction.date.split('T')[0] : "No Date";
 
     if (!totals[date]) totals[date] = 0;
@@ -211,7 +210,7 @@ const Insights = () => {
   );
 };
 
-// Reusable styles
+// styles, should be in css but idc anymore
 const cardStyle = {
   background: "linear-gradient(145deg, #1c2240, #2a2f5a)",
   padding: "20px",
