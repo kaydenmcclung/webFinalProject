@@ -2,39 +2,66 @@ import React, { useEffect, useState } from "react";
 
 const History = () => {
   const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // 1. Fetch data from Hapi API on load
+  const fetchTransactions = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/transactions");
+      if (!response.ok) throw new Error("Failed to fetch");
+      const data = await response.json();
+      setTransactions(data);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const stored =
-      JSON.parse(localStorage.getItem("transactions")) || [];
-    setTransactions(stored);
+    fetchTransactions();
   }, []);
 
-  const handleDelete = (id) => {
+  // 2. Handle Delete via Hapi API
+  const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this transaction?"
     );
 
     if (!confirmDelete) return;
 
-    const updatedTransactions = transactions.filter(
-      (transaction) => transaction.id !== id
-    );
+    try {
+      const response = await fetch(`http://localhost:5000/transactions/${id}`, {
+        method: "DELETE",
+      });
 
-    setTransactions(updatedTransactions);
-    localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+      if (response.ok) {
+        // Update local state by filtering out the deleted item
+        setTransactions((prev) => prev.filter((t) => t.id !== id));
+      } else {
+        alert("Failed to delete from server.");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Error connecting to server.");
+    }
   };
 
-  // newest first
+  // Sort by ID (newest first)
   const sortedTransactions = [...transactions].sort((a, b) => b.id - a.id);
+
+  if (loading) {
+    return <p style={{ textAlign: "center", color: "white", padding: "20px" }}>Loading...</p>;
+  }
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+      <h2 style={{ textAlign: "center", marginBottom: "20px", color: "white" }}>
         Transaction History
       </h2>
 
       {sortedTransactions.length === 0 ? (
-        <p>No transactions yet.</p>
+        <p style={{ textAlign: "center", color: "white" }}>No transactions yet.</p>
       ) : (
         sortedTransactions.map((t) => (
           <div
@@ -55,13 +82,11 @@ const History = () => {
               <h3 style={{ margin: "0 0 5px 0" }}>
                 {t.description || "Transaction"}
               </h3>
-
-              <p style={{ margin: "2px 0" }}>
+              <p style={{ margin: "2px 0", fontSize: "0.9rem", opacity: 0.8 }}>
                 <strong>Category:</strong> {t.category}
               </p>
-
-              <p style={{ margin: "2px 0" }}>
-                <strong>Date:</strong> {t.date}
+              <p style={{ margin: "2px 0", fontSize: "0.9rem", opacity: 0.8 }}>
+                <strong>Date:</strong> {t.date.split('T')[0]}
               </p>
             </div>
 
@@ -71,21 +96,22 @@ const History = () => {
                 style={{
                   margin: "0 0 10px 0",
                   fontWeight: "bold",
-                  color: t.type === "income" ? "lightgreen" : "#ff8080",
+                  fontSize: "1.2rem",
+                  color: t.type === "income" ? "#90ee90" : "#ff8080",
                 }}
               >
-                ${t.amount}
+                {t.type === "income" ? "+" : "-"}${t.amount}
               </p>
-
               <button
                 onClick={() => handleDelete(t.id)}
                 style={{
                   backgroundColor: "#ff4d4d",
                   color: "white",
                   border: "none",
-                  padding: "6px 12px",
-                  borderRadius: "5px",
+                  padding: "6px 14px",
+                  borderRadius: "6px",
                   cursor: "pointer",
+                  fontWeight: "500",
                 }}
               >
                 Delete
