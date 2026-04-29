@@ -11,21 +11,16 @@ const AddTransaction = () => {
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 1. Validation logic remains the same
     if (!amount || !date || !category) {
       alert("Please fill in all required fields");
       return;
     }
 
-    if (parseFloat(amount) <= 0) {
-      alert("Amount must be greater than 0");
-      return;
-    }
-
-    const newTransaction = {
-      id: Date.now(),
+    const transactionData = {
       amount: parseFloat(amount),
       type,
       category,
@@ -33,24 +28,33 @@ const AddTransaction = () => {
       description,
     };
 
-    const existing =
-      JSON.parse(localStorage.getItem("transactions")) || [];
+    try {
+      // 2. Send to Hapi API
+      const response = await fetch("http://localhost:5000/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(transactionData),
+      });
 
-    const updated = [...existing, newTransaction];
-
-    localStorage.setItem("transactions", JSON.stringify(updated));
-
-    alert("Transaction added!");
-
-    // Reset form
-    setAmount("");
-    setType("income");
-    setCategory(""); // ← reset correctly
-    setDate("");
-    setDescription("");
-
-    navigate("/history");
+      if (response.ok) {
+        alert("Transaction added to database!");
+      
+        // Reset form
+        setAmount("");
+        setType("income");
+        setCategory("");
+        setDate("");
+        setDescription("");
+        navigate("/history");
+      } else {
+        alert("Failed to save transaction.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Server is not responding.");
+    }
   };
+
 
   return (
     <div
