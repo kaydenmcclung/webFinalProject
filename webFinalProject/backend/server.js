@@ -7,15 +7,15 @@ const init = async () => {
     const localUri = 'mongodb://127.0.0.1:27017/expense_tracker';
 
     await mongoose.connect(localUri)
-        .then(() => console.log('✅ Connected to Local MongoDB'))
+        .then(() => console.log('Connected to Local MongoDB'))
         .catch(err => {
-            console.error('❌ Local connection error:', err);
+            console.error('Local connection error:', err);
             process.exit(1);
         });
 
     const server = Hapi.server({
         port: 5000,
-        host: 'localhost',
+        host: '0.0.0.0',
         routes: { cors: true }
     });
 

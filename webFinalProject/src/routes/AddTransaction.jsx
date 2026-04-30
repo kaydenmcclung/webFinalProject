@@ -29,7 +29,7 @@ const AddTransaction = () => {
 
     try {
       //Send API
-      const response = await fetch("http://localhost:5000/transactions", {
+      const response = await fetch("http://18.223.101.123:5000/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(transactionData),

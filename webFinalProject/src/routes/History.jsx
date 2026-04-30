@@ -4,10 +4,10 @@ const History = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 1. Fetch data from Hapi API on load
+  // fetch data
   const fetchTransactions = async () => {
     try {
-      const response = await fetch("http://localhost:5000/transactions");
+      const response = await fetch("http://18.223.101.123:5000/transactions");
       if (!response.ok) throw new Error("Failed to fetch");
       const data = await response.json();
       setTransactions(data);
@@ -22,7 +22,7 @@ const History = () => {
     fetchTransactions();
   }, []);
 
-  // 2. Handle Delete via Hapi API
+  // handle delete
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this transaction?"
@@ -31,12 +31,11 @@ const History = () => {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/transactions/${id}`, {
+      const response = await fetch(`http://18.223.101.123:5000/transactions/${id}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        // Update local state by filtering out the deleted item
         setTransactions((prev) => prev.filter((t) => t._id !== id));
       } else {
         alert("Failed to delete from server.");
@@ -47,7 +46,7 @@ const History = () => {
     }
   };
 
-  // Sort by ID (newest first)
+  // Sort by ID 
   const sortedTransactions = [...transactions].sort((a, b) => b.id - a.id);
 
   if (loading) {
