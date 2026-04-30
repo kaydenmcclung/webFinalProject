@@ -1,7 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const Transaction = require('./models/Transaction');
+const Transaction = require('./models/transaction');
 
 const init = async () => {
     const localUri = 'mongodb://127.0.0.1:27017/expense_tracker';
